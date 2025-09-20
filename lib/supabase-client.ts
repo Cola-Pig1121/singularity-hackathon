@@ -1,8 +1,8 @@
 // 客户端使用的Supabase配置
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ckuskzwbupcgzbkvmddv.supabase.co'
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_T1R2S7HFYrAW3e-M0g0dug_N2G_jTVF'
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
 
 // 创建Supabase客户端
 export const createSupabaseClient = () => {
