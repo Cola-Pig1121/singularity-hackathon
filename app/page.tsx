@@ -78,7 +78,7 @@ export default async function HomePage() {
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-balance">创新作品展示</h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 text-pretty">
-              展示来自泉州地区优秀学生团队的创新项目，涵盖AI未来、社会科学普及和生活科技三大主题
+              展示来自泉州地区优秀学生团队的创新项目，涵盖赛博 AI 20X5、重新发现社会和科技改变生活三大主题
             </p>
             <div className="flex flex-wrap justify-center gap-4 mb-12">
               {Object.entries(themeIcons).map(([theme, Icon]) => (
