@@ -116,14 +116,14 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
-                {project.members.slice(0, 3).map((member, index) => (
+                {project.members.slice(0, 4).map((member, index) => (
                   <Avatar key={index} className="h-6 w-6 border-2 border-background">
                     <AvatarFallback className="text-xs bg-muted">{(member?.name || '').charAt(0)}</AvatarFallback>
                   </Avatar>
                 ))}
-                {project.members.length > 3 && (
+                {project.members.length > 4 && (
                   <Avatar className="h-6 w-6 border-2 border-background">
-                    <AvatarFallback className="text-xs bg-muted">+{project.members.length - 3}</AvatarFallback>
+                    <AvatarFallback className="text-xs bg-muted">+{project.members.length - 4}</AvatarFallback>
                   </Avatar>
                 )}
               </div>

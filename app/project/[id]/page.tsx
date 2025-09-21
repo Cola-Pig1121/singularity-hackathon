@@ -57,12 +57,24 @@ const getThemeDisplayName = (theme: number[]): string => {
   return "未知主题"
 }
 
-export default async function ProjectDetailPage() {
+export const dynamicParams = false
+
+export async function generateStaticParams() {
+  const { data, error } = await supabase.from('project').select('id')
+  if (error || !data) {
+    console.error('生成静态参数失败:', error)
+    return []
+  }
+  return data.map((row: { id: number }) => ({ id: String(row.id) }))
+}
+
+export default async function ProjectDetailPage({ params }: { params: { id: string } }) {
 
   // 从 Supabase 获取项目数据，只选择实际存在的列
   const { data, error } = await supabase
     .from('project')
     .select('id, title, description, theme, teamName, members, thumbnail, demoUrl, sourceUrl, videoUrl')
+    .eq('id', Number(params.id))
     .single()
 
   if (error || !data) {
