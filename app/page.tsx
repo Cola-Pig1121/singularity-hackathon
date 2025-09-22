@@ -100,7 +100,7 @@ export default async function HomePage() {
               </Button>
 
               <Button variant="outline" size="lg" className="btn btn-secondary">
-                <Link href="https://tcnlbejp56nf.feishu.cn/share/base/form/shrcnE0XuixwuEHHQ4wM1wRJclc">
+                <Link href="https://tcnlbejp56nf.feishu.cn/share/base/form/shrcn007JnsSHJXC3i6rnq6Vy4e">
                   提交作品
                 </Link>
               </Button>
