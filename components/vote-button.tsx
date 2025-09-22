@@ -40,15 +40,71 @@ export function VoteButton({ projectId, className }: VoteButtonProps) {
       setVotes(voteCount)
     } catch (error) {
       console.error('加载票数失败:', error)
+    }
+  }
+
+  const checkVoteStatus = async () => {
+    try {
+      // 首先检查本地存储
+      const votedProjects = JSON.parse(localStorage.getItem('voted_projects') || '[]')
+      const hasLocalVoted = votedProjects.includes(projectIdBigInt.toString())
+      
+      if (hasLocalVoted) {
+        setHasVoted(true)
+        setIsLoading(false)
+        return
+      }
+
+      // 如果本地存储没有记录，检查IP是否已经投过票
+      const userIP = await getUserIP()
+      const hasIPVoted = await voteFunctions.checkIPVoted(projectIdBigInt, userIP)
+      
+      if (hasIPVoted) {
+        // 如果IP已经投过票，同步到本地存储
+        votedProjects.push(projectIdBigInt.toString())
+        localStorage.setItem('voted_projects', JSON.stringify(votedProjects))
+        setHasVoted(true)
+      } else {
+        setHasVoted(false)
+      }
+    } catch (error) {
+      console.error('检查投票状态失败:', error)
+      // 如果检查失败，只依赖本地存储
+      const votedProjects = JSON.parse(localStorage.getItem('voted_projects') || '[]')
+      setHasVoted(votedProjects.includes(projectIdBigInt.toString()))
     } finally {
       setIsLoading(false)
     }
   }
 
-  const checkVoteStatus = () => {
-    // 检查本地存储，判断用户是否已经投过票
-    const votedProjects = JSON.parse(localStorage.getItem('voted_projects') || '[]')
-    setHasVoted(votedProjects.includes(projectIdBigInt.toString()))
+  // 获取用户IP地址的函数
+  const getUserIP = async (): Promise<string> => {
+    try {
+      // 尝试使用多个IP获取服务
+      const ipServices = [
+        'https://api.ipify.org?format=json',
+        'https://ipapi.co/json/',
+        'https://api.ip.sb/jsonip'
+      ]
+      
+      for (const service of ipServices) {
+        try {
+          const response = await fetch(service)
+          const data = await response.json()
+          const ip = data.ip || data.query
+          if (ip) return ip
+        } catch (error) {
+          console.log(`IP服务 ${service} 失败:`, error)
+          continue
+        }
+      }
+      
+      // 如果所有服务都失败，返回默认值
+      return 'unknown'
+    } catch (error) {
+      console.error('获取IP失败:', error)
+      return 'unknown'
+    }
   }
 
   const handleVote = async () => {
@@ -63,7 +119,30 @@ export function VoteButton({ projectId, className }: VoteButtonProps) {
 
     setIsVoting(true)
     try {
-      const success = await voteFunctions.incrementVote(projectIdBigInt)
+      // 获取用户IP
+      const userIP = await getUserIP()
+      
+      // 检查IP是否已经投过票
+      const hasIPVoted = await voteFunctions.checkIPVoted(projectIdBigInt, userIP)
+      
+      if (hasIPVoted) {
+        toast({
+          title: '投票失败',
+          description: '该IP地址已经投过票了',
+          variant: 'destructive'
+        })
+        // 同步本地状态
+        const votedProjects = JSON.parse(localStorage.getItem('voted_projects') || '[]')
+        if (!votedProjects.includes(projectIdBigInt.toString())) {
+          votedProjects.push(projectIdBigInt.toString())
+          localStorage.setItem('voted_projects', JSON.stringify(votedProjects))
+        }
+        setHasVoted(true)
+        return
+      }
+
+      // 进行投票并保存IP
+      const success = await voteFunctions.incrementVoteWithIP(projectIdBigInt, userIP)
       
       if (success) {
         // 更新本地存储
@@ -83,6 +162,7 @@ export function VoteButton({ projectId, className }: VoteButtonProps) {
         throw new Error('投票失败')
       }
     } catch (error) {
+      console.error('投票错误:', error)
       toast({
         title: '投票失败',
         description: '请稍后再试',
