@@ -79,6 +79,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             width={300}
             height={200}
             className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+            draggable={false}
           />
           <div className="absolute top-3 left-3 flex flex-wrap gap-1">
             {project.theme.map((themeNumber, index) => {

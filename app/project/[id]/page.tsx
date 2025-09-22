@@ -184,6 +184,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
               width={800}
               height={400}
               className="w-full h-64 md:h-96 object-cover rounded-lg border border-border/50"
+              draggable={false}
             />
           </div>
 
