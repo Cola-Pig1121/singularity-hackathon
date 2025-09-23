@@ -55,6 +55,8 @@ export default function HomePage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [displayedProjects, setDisplayedProjects] = useState<any[]>([])
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set())
+  const [focusedTimelineNode, setFocusedTimelineNode] = useState<number | null>(null)
+  const [timelineLeaveTimeout, setTimelineLeaveTimeout] = useState<NodeJS.Timeout | null>(null)
 
   // 创建观察器引用
   const observerRef = useRef<IntersectionObserver | null>(null)
@@ -226,9 +228,9 @@ export default function HomePage() {
         <div className="container mx-auto px-4 max-w-4xl">
           {/* 活动标题 */}
           <div
-            className={`mb-16 transition-all duration-700 hover:scale-105 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('hero-title')
-              ? 'transform scale-100 opacity-100'
-              : 'transform scale-95 opacity-70'
+            className={`mb-16 transition-all duration-1000 hover:scale-110 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('hero-title')
+              ? 'transform scale-105 opacity-100 blur-none'
+              : 'transform scale-90 opacity-0 blur-sm translate-y-8'
               }`}
             data-section="hero-title"
           >
@@ -253,9 +255,9 @@ export default function HomePage() {
           <div className="space-y-16">
             {/* 活动背景 */}
             <div
-              className={`transition-all duration-700 hover:scale-105 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('background')
-                ? 'transform scale-100 opacity-100'
-                : 'transform scale-95 opacity-70'
+              className={`transition-all duration-1000 hover:scale-110 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('background')
+                ? 'transform scale-105 opacity-100 blur-none'
+                : 'transform scale-90 opacity-0 blur-sm translate-y-8'
                 }`}
               data-section="background"
             >
@@ -270,51 +272,200 @@ export default function HomePage() {
 
             {/* 活动进程 */}
             <div
-              className={`transition-all duration-700 hover:scale-105 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('schedule')
-                ? 'transform scale-100 opacity-100'
-                : 'transform scale-95 opacity-70'
+              className={`transition-all duration-1000 bg-card/50 rounded-lg p-8 ${visibleSections.has('schedule')
+                ? 'transform scale-105 opacity-100 blur-none'
+                : 'transform scale-90 opacity-0 blur-sm translate-y-8'
                 }`}
               data-section="schedule"
             >
               <div className="text-sm font-mono text-primary mb-4">SCHEDULE</div>
               <div className="text-sm font-mono text-primary mb-8">TIMELINE</div>
               <h3 className="text-3xl md:text-4xl font-bold mb-8">活动进程</h3>
-              <div className="space-y-6">
-                <div className="border-l-4 border-primary pl-6 bg-card rounded-r-lg p-4">
-                  <h4 className="text-xl font-bold mb-2">
-                    <span className="text-primary">报名阶段</span>：9 月 25 日 - 9 月 30 日
-                  </h4>
-                  <p className="text-muted-foreground">参赛队伍通过指定平台完成报名，提交队伍信息。</p>
-                </div>
+              
+              {/* 横向时间轴 */}
+              <div className="relative">
+                {/* 时间轴线 - 聚焦时隐藏 */}
+                <div className={`absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-primary/30 via-primary to-primary/30 rounded-full transform -translate-y-1/2 transition-all duration-500 ${
+                  focusedTimelineNode !== null ? 'opacity-0' : 'opacity-100'
+                }`}></div>
+                
+                {/* 时间节点容器 */}
+                <div className="space-y-8">
+                  {/* 节点行 */}
+                  <div className="flex justify-between items-center relative z-10 px-4 pb-8">
+                    {/* 报名阶段 */}
+                    <div 
+                      className={`relative flex flex-col items-center transition-all duration-500 ${
+                        focusedTimelineNode !== null && focusedTimelineNode !== 0 ? 'opacity-20 blur-sm scale-75' : ''
+                      }`}
+                      onMouseEnter={() => {
+                        if (timelineLeaveTimeout) {
+                          clearTimeout(timelineLeaveTimeout)
+                          setTimelineLeaveTimeout(null)
+                        }
+                        setFocusedTimelineNode(0)
+                      }}
+                      onMouseLeave={() => {
+                        const timeout = setTimeout(() => {
+                          setFocusedTimelineNode(null)
+                        }, 800) // 800ms 延迟淡出
+                        setTimelineLeaveTimeout(timeout)
+                      }}
+                    >
+                      <div className={`w-6 h-6 bg-primary rounded-full border-4 border-background shadow-lg transition-all duration-500 cursor-pointer relative z-50 ${
+                        focusedTimelineNode === 0 ? 'scale-300 shadow-2xl' : 'hover:scale-150'
+                      }`}></div>
+                      <span className={`text-xs text-muted-foreground mt-2 text-center transition-all duration-500 ${
+                        focusedTimelineNode === 0 ? 'opacity-0' : ''
+                      }`}>9/25-9/30</span>
+                    </div>
 
-                <div className="border-l-4 border-primary pl-6 bg-card rounded-r-lg p-4">
-                  <h4 className="text-xl font-bold mb-2">
-                    <span className="text-primary">开发阶段</span>：10 月 1 日 - 10 月 7 日
-                  </h4>
-                  <p className="text-muted-foreground">参赛者进行项目开发，最终提交截止时间为 <span className="text-primary font-semibold">10 月 7 日 23:59</span>。</p>
-                </div>
+                    {/* 开发阶段 */}
+                    <div 
+                      className={`relative flex flex-col items-center transition-all duration-500 ${
+                        focusedTimelineNode !== null && focusedTimelineNode !== 1 ? 'opacity-20 blur-sm scale-75' : ''
+                      }`}
+                      onMouseEnter={() => {
+                        if (timelineLeaveTimeout) {
+                          clearTimeout(timelineLeaveTimeout)
+                          setTimelineLeaveTimeout(null)
+                        }
+                        setFocusedTimelineNode(1)
+                      }}
+                      onMouseLeave={() => {
+                        const timeout = setTimeout(() => {
+                          setFocusedTimelineNode(null)
+                        }, 800) // 800ms 延迟淡出
+                        setTimelineLeaveTimeout(timeout)
+                      }}
+                    >
+                      <div className={`w-6 h-6 bg-green-500 rounded-full border-4 border-background shadow-lg transition-all duration-500 cursor-pointer relative z-50 ${
+                        focusedTimelineNode === 1 ? 'scale-300 shadow-2xl' : 'hover:scale-150'
+                      }`}></div>
+                      <span className={`text-xs text-muted-foreground mt-2 text-center transition-all duration-500 ${
+                        focusedTimelineNode === 1 ? 'opacity-0' : ''
+                      }`}>10/1-10/7</span>
+                    </div>
 
-                <div className="border-l-4 border-primary pl-6 bg-card rounded-r-lg p-4">
-                  <h4 className="text-xl font-bold mb-2">
-                    <span className="text-primary">评审阶段</span>：10 月 8 日 - 10 月 9 日
-                  </h4>
-                  <p className="text-muted-foreground">评审团队依据评分标准对所有参赛作品进行评审。</p>
-                </div>
+                    {/* 评审阶段 */}
+                    <div 
+                      className={`relative flex flex-col items-center transition-all duration-500 ${
+                        focusedTimelineNode !== null && focusedTimelineNode !== 2 ? 'opacity-20 blur-sm scale-75' : ''
+                      }`}
+                      onMouseEnter={() => {
+                        if (timelineLeaveTimeout) {
+                          clearTimeout(timelineLeaveTimeout)
+                          setTimelineLeaveTimeout(null)
+                        }
+                        setFocusedTimelineNode(2)
+                      }}
+                      onMouseLeave={() => {
+                        const timeout = setTimeout(() => {
+                          setFocusedTimelineNode(null)
+                        }, 800) // 800ms 延迟淡出
+                        setTimelineLeaveTimeout(timeout)
+                      }}
+                    >
+                      <div className={`w-6 h-6 bg-blue-500 rounded-full border-4 border-background shadow-lg transition-all duration-500 cursor-pointer relative z-50 ${
+                        focusedTimelineNode === 2 ? 'scale-300 shadow-2xl' : 'hover:scale-150'
+                      }`}></div>
+                      <span className={`text-xs text-muted-foreground mt-2 text-center transition-all duration-500 ${
+                        focusedTimelineNode === 2 ? 'opacity-0' : ''
+                      }`}>10/8-10/9</span>
+                    </div>
 
-                <div className="border-l-4 border-primary pl-6 bg-card rounded-r-lg p-4">
-                  <h4 className="text-xl font-bold mb-2">
-                    <span className="text-primary">结果公布</span>：10 月 10 日
-                  </h4>
-                  <p className="text-muted-foreground">通过公众号公布获奖名单以及各队伍得分详情。</p>
+                    {/* 结果公布 */}
+                    <div 
+                      className={`relative flex flex-col items-center transition-all duration-500 ${
+                        focusedTimelineNode !== null && focusedTimelineNode !== 3 ? 'opacity-20 blur-sm scale-75' : ''
+                      }`}
+                      onMouseEnter={() => {
+                        if (timelineLeaveTimeout) {
+                          clearTimeout(timelineLeaveTimeout)
+                          setTimelineLeaveTimeout(null)
+                        }
+                        setFocusedTimelineNode(3)
+                      }}
+                      onMouseLeave={() => {
+                        if (timelineLeaveTimeout) {
+                          clearTimeout(timelineLeaveTimeout)
+                        }
+                        const timeout = setTimeout(() => {
+                          setFocusedTimelineNode(null)
+                        }, 800) // 800ms 延迟淡出
+                        setTimelineLeaveTimeout(timeout)
+                      }}
+                    >
+                      <div className={`w-6 h-6 bg-yellow-500 rounded-full border-4 border-background shadow-lg transition-all duration-500 cursor-pointer relative z-50 ${
+                        focusedTimelineNode === 3 ? 'scale-300 shadow-2xl' : 'hover:scale-150'
+                      }`}></div>
+                      <span className={`text-xs text-muted-foreground mt-2 text-center transition-all duration-500 ${
+                        focusedTimelineNode === 3 ? 'opacity-0' : ''
+                      }`}>10/10</span>
+                    </div>
+                  </div>
+
+                  {/* 详细信息区域 - 简洁文字浮窗 */}
+                  <div className={`transition-all duration-500 overflow-hidden ${
+                    focusedTimelineNode !== null ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
+                  }`}>
+                    {/* 报名阶段详情 */}
+                    {focusedTimelineNode === 0 && (
+                      <div className="text-center py-6 px-4">
+                        <h4 className="text-3xl md:text-4xl font-bold mb-4 text-primary">报名阶段</h4>
+                        <p className="text-xl text-primary font-semibold mb-4">9月25日 - 9月30日</p>
+                        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+                          参赛队伍通过指定平台完成报名，提交队伍信息。这是整个黑客松的起点，
+                          所有有创意想法的同学都可以在这个阶段组建团队，准备迎接挑战。
+                        </p>
+                      </div>
+                    )}
+
+                    {/* 开发阶段详情 */}
+                    {focusedTimelineNode === 1 && (
+                      <div className="text-center py-6 px-4">
+                        <h4 className="text-3xl md:text-4xl font-bold mb-4 text-green-500">开发阶段</h4>
+                        <p className="text-xl text-green-500 font-semibold mb-4">10月1日 - 10月7日</p>
+                        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+                          参赛者进行项目开发，这是最激动人心的7天！团队成员将把创意转化为现实，
+                          最终提交截止时间为<span className="text-green-500 font-semibold">10月7日23:59</span>。记住，创新没有界限！
+                        </p>
+                      </div>
+                    )}
+
+                    {/* 评审阶段详情 */}
+                    {focusedTimelineNode === 2 && (
+                      <div className="text-center py-6 px-4">
+                        <h4 className="text-3xl md:text-4xl font-bold mb-4 text-blue-500">评审阶段</h4>
+                        <p className="text-xl text-blue-500 font-semibold mb-4">10月8日 - 10月9日</p>
+                        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+                          评审团队依据评分标准对所有参赛作品进行评审。专业的评委将从<span className="text-blue-500 font-semibold">创新性、
+                          技术实现、用户体验</span>等多个维度对作品进行全面评估。
+                        </p>
+                      </div>
+                    )}
+
+                    {/* 结果公布详情 */}
+                    {focusedTimelineNode === 3 && (
+                      <div className="text-center py-6 px-4">
+                        <h4 className="text-3xl md:text-4xl font-bold mb-4 text-yellow-500">结果公布</h4>
+                        <p className="text-xl text-yellow-500 font-semibold mb-4">10月10日</p>
+                        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+                          激动人心的时刻！通过公众号公布获奖名单以及各队伍得分详情。
+                          无论结果如何，每一个参与者都是<span className="text-yellow-500 font-semibold">创新路上的勇士</span>！
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* 参与对象 */}
             <div
-              className={`transition-all duration-700 hover:scale-105 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('participants')
-                ? 'transform scale-100 opacity-100'
-                : 'transform scale-95 opacity-70'
+              className={`transition-all duration-1000 hover:scale-110 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('participants')
+                ? 'transform scale-105 opacity-100 blur-none'
+                : 'transform scale-90 opacity-0 blur-sm translate-y-8'
                 }`}
               data-section="participants"
             >
@@ -330,9 +481,9 @@ export default function HomePage() {
             {/* 三大主题 */}
             <div className="space-y-12">
               <div
-                className={`transition-all duration-700 hover:scale-105 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('themes-title')
-                    ? 'transform scale-100 opacity-100'
-                    : 'transform scale-95 opacity-70'
+                className={`transition-all duration-1000 hover:scale-110 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('themes-title')
+                    ? 'transform scale-105 opacity-100 blur-none'
+                    : 'transform scale-90 opacity-0 blur-sm translate-y-8'
                   }`}
                 data-section="themes-title"
               >
@@ -341,9 +492,9 @@ export default function HomePage() {
 
               {/* 主题1 */}
               <div
-                className={`border-l-4 border-primary pl-6 bg-card/50 rounded-r-lg p-6 transition-all duration-700 hover:scale-105 cursor-pointer hover:bg-card/70 ${visibleSections.has('theme-1')
-                    ? 'transform scale-100 opacity-100'
-                    : 'transform scale-95 opacity-70'
+                className={`border-l-4 border-primary pl-6 bg-card/50 rounded-r-lg p-6 transition-all duration-1000 hover:scale-110 cursor-pointer hover:bg-card/70 ${visibleSections.has('theme-1')
+                    ? 'transform scale-105 opacity-100 blur-none'
+                    : 'transform scale-90 opacity-0 blur-sm translate-y-8'
                   }`}
                 data-section="theme-1"
               >
@@ -366,9 +517,9 @@ export default function HomePage() {
 
               {/* 主题2 */}
               <div
-                className={`border-l-4 border-primary pl-6 bg-card rounded-r-lg p-6 transition-all duration-700 ${visibleSections.has('theme-2')
-                    ? 'transform scale-100 opacity-100'
-                    : 'transform scale-95 opacity-70'
+                className={`border-l-4 border-primary pl-6 bg-card/50 rounded-r-lg p-6 transition-all duration-1000 hover:scale-110 cursor-pointer hover:bg-card/70 ${visibleSections.has('theme-2')
+                    ? 'transform scale-105 opacity-100 blur-none'
+                    : 'transform scale-90 opacity-0 blur-sm translate-y-8'
                   }`}
                 data-section="theme-2"
               >
@@ -388,9 +539,9 @@ export default function HomePage() {
 
               {/* 主题3 */}
               <div
-                className={`border-l-4 border-primary pl-6 bg-card rounded-r-lg p-6 transition-all duration-700 ${visibleSections.has('theme-3')
-                    ? 'transform scale-100 opacity-100'
-                    : 'transform scale-95 opacity-70'
+                className={`border-l-4 border-primary pl-6 bg-card/50 rounded-r-lg p-6 transition-all duration-1000 hover:scale-110 cursor-pointer hover:bg-card/70 ${visibleSections.has('theme-3')
+                    ? 'transform scale-105 opacity-100 blur-none'
+                    : 'transform scale-90 opacity-0 blur-sm translate-y-8'
                   }`}
                 data-section="theme-3"
               >
@@ -410,9 +561,9 @@ export default function HomePage() {
 
               {/* 人气奖 */}
               <div
-                className={`border-l-4 border-yellow-500 pl-6 bg-card rounded-r-lg p-6 transition-all duration-700 ${visibleSections.has('popular-award')
-                    ? 'transform scale-100 opacity-100'
-                    : 'transform scale-95 opacity-70'
+                className={`border-l-4 border-yellow-500 pl-6 bg-card/50 rounded-r-lg p-6 transition-all duration-1000 hover:scale-110 cursor-pointer hover:bg-card/70 ${visibleSections.has('popular-award')
+                    ? 'transform scale-105 opacity-100 blur-none'
+                    : 'transform scale-90 opacity-0 blur-sm translate-y-8'
                   }`}
                 data-section="popular-award"
               >
@@ -427,21 +578,36 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-            <div className="flex gap-6 justify-center mb-16">
-              <Button variant="outline" size="lg" className="btn btn-primary">
-                <Link href="https://tcnlbejp56nf.feishu.cn/share/base/form/shrcnWVcXfolsLg6tXZhoeXRXSb">
+            <div className="flex gap-6 justify-center mb-16 flex-wrap">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="bg-card/50 hover:bg-primary hover:text-primary-foreground transform hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl border-primary/50 hover:border-primary"
+              >
+                <Link href="https://tcnlbejp56nf.feishu.cn/share/base/form/shrcnWVcXfolsLg6tXZhoeXRXSb" className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4" />
                   立即报名
                 </Link>
               </Button>
 
-              <Button variant="outline" size="lg" className="btn btn-secondary">
-                <Link href="https://tcnlbejp56nf.feishu.cn/share/base/form/shrcn007JnsSHJXC3i6rnq6Vy4e">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="bg-card/50 hover:bg-green-600 hover:text-white transform hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl border-green-500/50 hover:border-green-600"
+              >
+                <Link href="https://tcnlbejp56nf.feishu.cn/share/base/form/shrcn007JnsSHJXC3i6rnq6Vy4e" className="flex items-center gap-2">
+                  <Lightbulb className="h-4 w-4" />
                   提交作品
                 </Link>
               </Button>
 
-              <Button variant="outline" size="lg" className="btn btn-primary">
-                <Link href="/leaderboard">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="bg-card/50 hover:bg-blue-600 hover:text-white transform hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl border-blue-500/50 hover:border-blue-600"
+              >
+                <Link href="/leaderboard" className="flex items-center gap-2">
+                  <Users className="h-4 w-4" />
                   查看排行榜
                 </Link>
               </Button>
@@ -487,7 +653,7 @@ export default function HomePage() {
                     size="sm"
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="flex items-center gap-1"
+                    className="flex items-center gap-1 bg-card/50 hover:bg-primary hover:text-primary-foreground transform hover:scale-110 transition-all duration-300 disabled:hover:scale-100 disabled:hover:bg-card/50"
                   >
                     <ChevronLeft className="h-4 w-4" />
                     上一页
@@ -500,7 +666,11 @@ export default function HomePage() {
                         variant={currentPage === page ? "default" : "outline"}
                         size="sm"
                         onClick={() => handlePageChange(page)}
-                        className="min-w-[40px]"
+                        className={`min-w-[40px] transform hover:scale-110 transition-all duration-300 ${
+                          currentPage === page 
+                            ? "bg-primary text-primary-foreground shadow-lg" 
+                            : "bg-card/50 hover:bg-primary hover:text-primary-foreground"
+                        }`}
                       >
                         {page}
                       </Button>
@@ -512,7 +682,7 @@ export default function HomePage() {
                     size="sm"
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className="flex items-center gap-1"
+                    className="flex items-center gap-1 bg-card/50 hover:bg-primary hover:text-primary-foreground transform hover:scale-110 transition-all duration-300 disabled:hover:scale-100 disabled:hover:bg-card/50"
                   >
                     下一页
                     <ChevronRight className="h-4 w-4" />
