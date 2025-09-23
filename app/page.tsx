@@ -56,7 +56,6 @@ export default function HomePage() {
   const [displayedProjects, setDisplayedProjects] = useState<any[]>([])
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set())
   const [focusedTimelineNode, setFocusedTimelineNode] = useState<number | null>(null)
-  const [timelineLeaveTimeout, setTimelineLeaveTimeout] = useState<NodeJS.Timeout | null>(null)
 
   // 创建观察器引用
   const observerRef = useRef<IntersectionObserver | null>(null)
@@ -291,6 +290,11 @@ export default function HomePage() {
                 
                 {/* 时间节点容器 */}
                 <div className="space-y-8">
+                  {/* 整个时间轴容器 - 统一的鼠标事件处理 */}
+                <div 
+                  className="relative"
+                  onMouseLeave={() => setFocusedTimelineNode(null)}
+                >
                   {/* 节点行 */}
                   <div className="flex justify-between items-center relative z-10 px-4 pb-8">
                     {/* 报名阶段 */}
@@ -298,19 +302,7 @@ export default function HomePage() {
                       className={`relative flex flex-col items-center transition-all duration-500 ${
                         focusedTimelineNode !== null && focusedTimelineNode !== 0 ? 'opacity-20 blur-sm scale-75' : ''
                       }`}
-                      onMouseEnter={() => {
-                        if (timelineLeaveTimeout) {
-                          clearTimeout(timelineLeaveTimeout)
-                          setTimelineLeaveTimeout(null)
-                        }
-                        setFocusedTimelineNode(0)
-                      }}
-                      onMouseLeave={() => {
-                        const timeout = setTimeout(() => {
-                          setFocusedTimelineNode(null)
-                        }, 800) // 800ms 延迟淡出
-                        setTimelineLeaveTimeout(timeout)
-                      }}
+                      onMouseEnter={() => setFocusedTimelineNode(0)}
                     >
                       <div className={`w-6 h-6 bg-primary rounded-full border-4 border-background shadow-lg transition-all duration-500 cursor-pointer relative z-50 ${
                         focusedTimelineNode === 0 ? 'scale-300 shadow-2xl' : 'hover:scale-150'
@@ -325,19 +317,7 @@ export default function HomePage() {
                       className={`relative flex flex-col items-center transition-all duration-500 ${
                         focusedTimelineNode !== null && focusedTimelineNode !== 1 ? 'opacity-20 blur-sm scale-75' : ''
                       }`}
-                      onMouseEnter={() => {
-                        if (timelineLeaveTimeout) {
-                          clearTimeout(timelineLeaveTimeout)
-                          setTimelineLeaveTimeout(null)
-                        }
-                        setFocusedTimelineNode(1)
-                      }}
-                      onMouseLeave={() => {
-                        const timeout = setTimeout(() => {
-                          setFocusedTimelineNode(null)
-                        }, 800) // 800ms 延迟淡出
-                        setTimelineLeaveTimeout(timeout)
-                      }}
+                      onMouseEnter={() => setFocusedTimelineNode(1)}
                     >
                       <div className={`w-6 h-6 bg-green-500 rounded-full border-4 border-background shadow-lg transition-all duration-500 cursor-pointer relative z-50 ${
                         focusedTimelineNode === 1 ? 'scale-300 shadow-2xl' : 'hover:scale-150'
@@ -352,19 +332,7 @@ export default function HomePage() {
                       className={`relative flex flex-col items-center transition-all duration-500 ${
                         focusedTimelineNode !== null && focusedTimelineNode !== 2 ? 'opacity-20 blur-sm scale-75' : ''
                       }`}
-                      onMouseEnter={() => {
-                        if (timelineLeaveTimeout) {
-                          clearTimeout(timelineLeaveTimeout)
-                          setTimelineLeaveTimeout(null)
-                        }
-                        setFocusedTimelineNode(2)
-                      }}
-                      onMouseLeave={() => {
-                        const timeout = setTimeout(() => {
-                          setFocusedTimelineNode(null)
-                        }, 800) // 800ms 延迟淡出
-                        setTimelineLeaveTimeout(timeout)
-                      }}
+                      onMouseEnter={() => setFocusedTimelineNode(2)}
                     >
                       <div className={`w-6 h-6 bg-blue-500 rounded-full border-4 border-background shadow-lg transition-all duration-500 cursor-pointer relative z-50 ${
                         focusedTimelineNode === 2 ? 'scale-300 shadow-2xl' : 'hover:scale-150'
@@ -379,22 +347,7 @@ export default function HomePage() {
                       className={`relative flex flex-col items-center transition-all duration-500 ${
                         focusedTimelineNode !== null && focusedTimelineNode !== 3 ? 'opacity-20 blur-sm scale-75' : ''
                       }`}
-                      onMouseEnter={() => {
-                        if (timelineLeaveTimeout) {
-                          clearTimeout(timelineLeaveTimeout)
-                          setTimelineLeaveTimeout(null)
-                        }
-                        setFocusedTimelineNode(3)
-                      }}
-                      onMouseLeave={() => {
-                        if (timelineLeaveTimeout) {
-                          clearTimeout(timelineLeaveTimeout)
-                        }
-                        const timeout = setTimeout(() => {
-                          setFocusedTimelineNode(null)
-                        }, 800) // 800ms 延迟淡出
-                        setTimelineLeaveTimeout(timeout)
-                      }}
+                      onMouseEnter={() => setFocusedTimelineNode(3)}
                     >
                       <div className={`w-6 h-6 bg-yellow-500 rounded-full border-4 border-background shadow-lg transition-all duration-500 cursor-pointer relative z-50 ${
                         focusedTimelineNode === 3 ? 'scale-300 shadow-2xl' : 'hover:scale-150'
@@ -458,6 +411,7 @@ export default function HomePage() {
                     )}
                   </div>
                 </div>
+              </div>
               </div>
             </div>
 
