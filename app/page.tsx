@@ -213,7 +213,7 @@ export default function HomePage() {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-balance">创新作品展示</h1>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-balance">奇点·黑客松 作品展示</h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-12 text-pretty">
               展示来自泉州地区优秀学生团队的创新项目，涵盖三大创新主题
             </p>
@@ -226,7 +226,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 max-w-4xl">
           {/* 活动标题 */}
           <div
-            className={`mb-16 transition-all duration-700 ${visibleSections.has('hero-title')
+            className={`mb-16 transition-all duration-700 hover:scale-105 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('hero-title')
               ? 'transform scale-100 opacity-100'
               : 'transform scale-95 opacity-70'
               }`}
@@ -234,7 +234,7 @@ export default function HomePage() {
           >
             <div className="text-center mb-8">
               <div className="text-sm font-mono text-primary mb-2">SINGULARITY</div>
-              <div className="text-sm font-mono text-primary mb-8">HACKATHON 2024</div>
+              <div className="text-sm font-mono text-primary mb-8">HACKATHON 2025</div>
               <h2 className="text-4xl md:text-6xl font-bold mb-4">
                 <span className="text-primary">7</span>天创新之旅
               </h2>
@@ -253,7 +253,7 @@ export default function HomePage() {
           <div className="space-y-16">
             {/* 活动背景 */}
             <div
-              className={`transition-all duration-700 ${visibleSections.has('background')
+              className={`transition-all duration-700 hover:scale-105 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('background')
                 ? 'transform scale-100 opacity-100'
                 : 'transform scale-95 opacity-70'
                 }`}
@@ -270,7 +270,7 @@ export default function HomePage() {
 
             {/* 活动进程 */}
             <div
-              className={`transition-all duration-700 ${visibleSections.has('schedule')
+              className={`transition-all duration-700 hover:scale-105 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('schedule')
                 ? 'transform scale-100 opacity-100'
                 : 'transform scale-95 opacity-70'
                 }`}
@@ -312,7 +312,7 @@ export default function HomePage() {
 
             {/* 参与对象 */}
             <div
-              className={`transition-all duration-700 ${visibleSections.has('participants')
+              className={`transition-all duration-700 hover:scale-105 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('participants')
                 ? 'transform scale-100 opacity-100'
                 : 'transform scale-95 opacity-70'
                 }`}
@@ -328,75 +328,101 @@ export default function HomePage() {
             </div>
 
             {/* 三大主题 */}
-            <div
-              className={`space-y-12 transition-all duration-700 ${visibleSections.has('themes')
-                ? 'transform scale-100 opacity-100'
-                : 'transform scale-95 opacity-70'
-                }`}
-              data-section="themes"
-            >
-              <h3 className="text-3xl md:text-4xl font-bold mb-8">活动主题</h3>
+            <div className="space-y-12">
+              <div
+                className={`transition-all duration-700 hover:scale-105 cursor-pointer bg-card/50 rounded-lg p-8 ${visibleSections.has('themes-title')
+                    ? 'transform scale-100 opacity-100'
+                    : 'transform scale-95 opacity-70'
+                  }`}
+                data-section="themes-title"
+              >
+                <h3 className="text-4xl md:text-5xl font-bold mb-8">活动主题</h3>
+              </div>
 
               {/* 主题1 */}
-              <div className="border-l-4 border-primary pl-6 bg-card rounded-r-lg p-6">
-                <h4 className="text-2xl font-bold mb-4">
+              <div
+                className={`border-l-4 border-primary pl-6 bg-card/50 rounded-r-lg p-6 transition-all duration-700 hover:scale-105 cursor-pointer hover:bg-card/70 ${visibleSections.has('theme-1')
+                    ? 'transform scale-100 opacity-100'
+                    : 'transform scale-95 opacity-70'
+                  }`}
+                data-section="theme-1"
+              >
+                <h4 className="text-3xl md:text-4xl font-bold mb-6">
                   1. <span className="text-primary">赛博 AI 20X5</span>
                 </h4>
-                <p className="text-muted-foreground leading-relaxed mb-4">
+                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                   我们正处在一个由人工智能深刻改变的时代。<span className="text-primary">AI 不再是遥远的幻想，它已经融入我们的生活，重塑着世界秩序</span>。它在艺术、科学、医疗、交通等领域的应用，每天都在拓展着人类的边界。AI的未来充满无限可能，而我们相信，这份未来将由我们共同书写。<span className="text-primary font-semibold">到了 20X5 年，我们的世界会变成什么样？</span>
                 </p>
-                <div className="text-sm text-muted-foreground mb-2">
+                <div className="text-base text-muted-foreground mb-3">
                   <span className="text-primary font-semibold">特殊要求：</span>必须提交单个 HTML 文件（可附带静态资源，以 Zip 压缩包格式提交），确保可直接在浏览器中运行，不依赖本地服务端。代码由AI完成的部分需达到 70% 以上（需提供AI对话记录证明）。
                 </div>
-                <div className="text-sm text-muted-foreground mb-2">
+                <div className="text-base text-muted-foreground mb-3">
                   <span className="text-primary font-semibold">奖项设置：</span>一等奖：1名，奖金 100 元；二等奖：3名，奖金 50 元；三等奖：5名，奖金 10 元
                 </div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-sm text-muted-foreground">
                   引导参赛者思考人工智能在未来社会中的角色，创作具有前瞻性与启发性的作品。本主题面向大众开放（即使没有编程基础）。提供免费 ChatGPT/Gemini API 接口以供使用。
                 </div>
               </div>
 
               {/* 主题2 */}
-              <div className="border-l-4 border-primary pl-6 bg-card rounded-r-lg p-6">
-                <h4 className="text-2xl font-bold mb-4">
+              <div
+                className={`border-l-4 border-primary pl-6 bg-card rounded-r-lg p-6 transition-all duration-700 ${visibleSections.has('theme-2')
+                    ? 'transform scale-100 opacity-100'
+                    : 'transform scale-95 opacity-70'
+                  }`}
+                data-section="theme-2"
+              >
+                <h4 className="text-3xl md:text-4xl font-bold mb-6">
                   2. <span className="text-primary">重新发现社会</span>
                 </h4>
-                <p className="text-muted-foreground leading-relaxed mb-4">
+                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                   经济学、法学、社会学、心理学、传播学……<span className="text-primary">社会科学与现代社会生活息息相关，然而对大多数人来说却相对陌生</span>。<span className="text-primary font-semibold">如何将艰深晦涩的专业概念变得平易近人，为大众揭开社会科学的神秘面纱？</span>
                 </p>
-                <div className="text-sm text-muted-foreground mb-2">
+                <div className="text-base text-muted-foreground mb-3">
                   <span className="text-primary font-semibold">奖项设置：</span>一等奖：1名，奖金 100 元；二等奖：2名，奖金 50 元
                 </div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-sm text-muted-foreground">
                   鼓励参赛者进行学科交叉，用科技手段普及社会科学知识，制作具有教育意义和传播价值的作品。
                 </div>
               </div>
 
               {/* 主题3 */}
-              <div className="border-l-4 border-primary pl-6 bg-card rounded-r-lg p-6">
-                <h4 className="text-2xl font-bold mb-4">
+              <div
+                className={`border-l-4 border-primary pl-6 bg-card rounded-r-lg p-6 transition-all duration-700 ${visibleSections.has('theme-3')
+                    ? 'transform scale-100 opacity-100'
+                    : 'transform scale-95 opacity-70'
+                  }`}
+                data-section="theme-3"
+              >
+                <h4 className="text-3xl md:text-4xl font-bold mb-6">
                   3. <span className="text-primary">科技改变生活</span>
                 </h4>
-                <p className="text-muted-foreground leading-relaxed mb-4">
+                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                   <span className="text-primary">有不少发明因懒而生</span>。生活中小小的痛点，可能就是创新的源泉。<span className="text-primary font-semibold">即使只有一个人需要，你的创意也能在科技助力下真切地改变生活</span>。
                 </p>
-                <div className="text-sm text-muted-foreground mb-2">
+                <div className="text-base text-muted-foreground mb-3">
                   <span className="text-primary font-semibold">奖项设置：</span>一等奖：1名，奖金 100 元；二等奖：2名，奖金 50 元；三等奖：5名，奖金 15 元
                 </div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-sm text-muted-foreground">
                   引导参赛者从生活痛点出发，开发具有实用价值的工具类作品。
                 </div>
               </div>
 
               {/* 人气奖 */}
-              <div className="border-l-4 border-yellow-500 pl-6 bg-card rounded-r-lg p-6">
-                <h4 className="text-2xl font-bold mb-4">
+              <div
+                className={`border-l-4 border-yellow-500 pl-6 bg-card rounded-r-lg p-6 transition-all duration-700 ${visibleSections.has('popular-award')
+                    ? 'transform scale-100 opacity-100'
+                    : 'transform scale-95 opacity-70'
+                  }`}
+                data-section="popular-award"
+              >
+                <h4 className="text-3xl md:text-4xl font-bold mb-6">
                   <span className="text-yellow-600 dark:text-yellow-400">人气奖</span>
                 </h4>
-                <p className="text-muted-foreground leading-relaxed mb-4">
+                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                   在公开展示投票上获得最多投票的队伍将获得人气奖。
                 </p>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-base text-muted-foreground">
                   <span className="text-yellow-600 dark:text-yellow-400 font-semibold">奖项设置：</span>人气奖：1名，奖金 50 元
                 </div>
               </div>
