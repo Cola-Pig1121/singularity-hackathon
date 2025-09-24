@@ -28,22 +28,19 @@ const themeDetails = {
     title: "赛博 AI 20X5",
     description: "我们正处在一个由人工智能深刻改变的时代。AI 不再是遥远的幻想，它已经融入我们的生活，重塑着世界秩序。它在艺术、科学、医疗、交通等领域的应用，每天都在拓展着人类的边界。AI的未来充满无限可能，而我们相信，这份未来将由我们共同书写。到了 20X5 年，我们的世界会变成什么样？",
     requirements: "必须提交单个 HTML 文件（可附带静态资源，以 Zip 压缩包格式提交），确保可直接在浏览器中运行，不依赖本地服务端。代码由AI完成的部分需达到 70% 以上（需提供AI对话记录证明）。",
-    awards: "一等奖：1名，奖金 100 元；二等奖：3名，奖金 50 元；三等奖：5名，奖金 10 元",
-    note: "引导参赛者思考人工智能在未来社会中的角色，创作具有前瞻性与启发性的作品。本主题面向大众开放（即使没有编程基础）。提供免费 ChatGPT/Gemini API 接口以供使用。"
+    awards: "一等奖：1名，奖金 100 元；二等奖：3名，奖金 50 元；三等奖：5名，奖金 10 元"
   },
   "重新发现社会": {
     title: "重新发现社会",
     description: "经济学、法学、社会学、心理学、传播学……社会科学与现代社会生活息息相关，然而对大多数人来说却相对陌生。如何将艰深晦涩的专业概念变得平易近人，为大众揭开社会科学的神秘面纱？",
     requirements: "",
-    awards: "一等奖：1名，奖金 100 元；二等奖：2名，奖金 50 元",
-    note: "鼓励参赛者进行学科交叉，用科技手段普及社会科学知识，制作具有教育意义和传播价值的作品。"
+    awards: "一等奖：1名，奖金 100 元；二等奖：2名，奖金 50 元"
   },
   "科技改变生活": {
     title: "科技改变生活",
     description: "有不少发明因懒而生。生活中小小的痛点，可能就是创新的源泉。即使只有一个人需要，你的创意也能在科技助力下真切地改变生活。",
     requirements: "",
-    awards: "一等奖：1名，奖金 100 元；二等奖：2名，奖金 50 元；三等奖：5名，奖金 15 元",
-    note: "引导参赛者从生活痛点出发，开发具有实用价值的工具类作品。"
+    awards: "一等奖：1名，奖金 100 元；二等奖：2名，奖金 50 元；三等奖：5名，奖金 15 元"
   }
 }
 
@@ -464,9 +461,6 @@ export default function HomePage() {
                 <div className="text-base text-muted-foreground mb-3">
                   <span className="text-primary font-semibold">奖项设置：</span>一等奖：1名，奖金 100 元；二等奖：3名，奖金 50 元；三等奖：5名，奖金 10 元
                 </div>
-                <div className="text-sm text-muted-foreground">
-                  引导参赛者思考人工智能在未来社会中的角色，创作具有前瞻性与启发性的作品。本主题面向大众开放（即使没有编程基础）。提供免费 ChatGPT/Gemini API 接口以供使用。
-                </div>
               </div>
 
               {/* 主题2 */}
@@ -486,9 +480,6 @@ export default function HomePage() {
                 <div className="text-base text-muted-foreground mb-3">
                   <span className="text-primary font-semibold">奖项设置：</span>一等奖：1名，奖金 100 元；二等奖：2名，奖金 50 元
                 </div>
-                <div className="text-sm text-muted-foreground">
-                  鼓励参赛者进行学科交叉，用科技手段普及社会科学知识，制作具有教育意义和传播价值的作品。
-                </div>
               </div>
 
               {/* 主题3 */}
@@ -507,9 +498,6 @@ export default function HomePage() {
                 </p>
                 <div className="text-base text-muted-foreground mb-3">
                   <span className="text-primary font-semibold">奖项设置：</span>一等奖：1名，奖金 100 元；二等奖：2名，奖金 50 元；三等奖：5名，奖金 15 元
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  引导参赛者从生活痛点出发，开发具有实用价值的工具类作品。
                 </div>
               </div>
 
