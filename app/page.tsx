@@ -446,7 +446,7 @@ export default function HomePage() {
               <div className="transition-all duration-500 ease-in-out max-h-none opacity-100">
                 <div className="px-8 pb-8">
                   <p className="text-lg text-muted-foreground leading-relaxed">
-                    由<span className="text-primary font-semibold">泉州市范围内的学生（18岁及以下）</span>进行自由组队，以团队身份参加比赛。
+                    由<span className="text-primary font-semibold">主要面向泉州市范围内的学生（18岁及以下），其他地区符合条件的朋友们，若有意向也可以参加</span>进行自由组队，以团队身份参加比赛。
                     <span className="text-primary font-semibold">每个团队至少一人，最多四人</span>。
                   </p>
                 </div>
